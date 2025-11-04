@@ -130,12 +130,26 @@
 </script>
 
 </body>
-  <audio id="alertSound" src="alert.mp3"></audio>
+  <audio id="alertSound" src="alert.mp3" preload="auto"></audio>
+
 <script>
-  // Play sound when user taps anywhere on the screen
-  document.body.addEventListener("click", () => {
-    const sound = document.getElementById("alertSound");
-    sound.play().catch(err => console.log("Autoplay blocked until click:", err));
+  const alertSound = document.getElementById("alertSound");
+
+  // Try playing once page loads (might be blocked)
+  window.addEventListener("load", () => {
+    alertSound.play().catch(() => {
+      console.log("Waiting for user interaction...");
+    });
   });
+
+  // Force play once user interacts (works on all browsers)
+  const enableSound = () => {
+    alertSound.play().catch(err => console.log(err));
+    document.body.removeEventListener("click", enableSound);
+    document.body.removeEventListener("touchstart", enableSound);
+  };
+
+  document.body.addEventListener("click", enableSound);
+  document.body.addEventListener("touchstart", enableSound);
 </script>
 </html>
