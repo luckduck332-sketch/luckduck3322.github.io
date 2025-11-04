@@ -130,4 +130,12 @@
 </script>
 
 </body>
+  <audio id="alertSound" src="alert.mp3"></audio>
+<script>
+  // Play sound when user taps anywhere on the screen
+  document.body.addEventListener("click", () => {
+    const sound = document.getElementById("alertSound");
+    sound.play().catch(err => console.log("Autoplay blocked until click:", err));
+  });
+</script>
 </html>
